@@ -23,17 +23,19 @@ class Panel extends BaseController
         return view('admin/dashboard', $data);
     }
 
-    public function getData()
+    public function getData($table=false, $ids=false)
     {
         if ($this->request->isAjax()) {
-            $data = [
-                'users' => $this->AdminModel->findAll()
-            ];
-
-            $res = [
-                'table' => view('admin/tablelist', $data)
-            ];
-
+            $table = $this->request->getVar('table');
+            if($ids){
+                $data['users'] = $this->AdminModel->find($ids);
+            }else{
+                $data['users'] = $this->AdminModel->findAll();
+            }
+            $res = ['data' => $data];
+            if ($table) {
+                $res['table'] = view('admin/tablelist', $data);
+            }
             echo json_encode($res);
         } else {
             exit("<h1>Data Tidak Bisa Diload</h1>");
@@ -52,6 +54,32 @@ class Panel extends BaseController
             // }
         } else {
             echo json_encode(["error" => "no Ajax"]);
+        }
+    }
+
+    public function editData()
+    {
+        if($this->request->isAJAX()){
+            // dd($this->request->getVar());
+            $ids = $this->request->getVar('idDataku');
+            $fileAva = $this->request->getFile('avatarEdit');
+            $namaAva = $fileAva->getRandomName();
+            $fileAva->move('assets/avatar', $namaAva);
+            $this->AdminModel->save([
+                'id' => $ids,
+                'username' => $this->request->getVar('usernameEdit'),
+                'password' => $this->request->getVar('passwordEdit'),
+                'nama' => $this->request->getVar('namaDepanEdit'),
+                'tempat_lahir' => $this->request->getVar('tempatLahirEdit'),
+                'tanggal_lahir' => $this->request->getVar('tglLahirEdit'),
+                'gender' => $this->request->getVar('genderEdit'),
+                'telepon' => $this->request->getVar('noTelpEdit'),
+                'email' => $this->request->getVar('emailEdit'),
+                'avatar' => $namaAva
+            ]);
+            echo json_encode(['pesan' => "Data Berhasil Diubah"]);
+        }else{
+            echo "No Access";
         }
     }
 

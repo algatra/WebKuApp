@@ -98,16 +98,99 @@
     </div>
 </div>
 
+<!-- Modal -->
+<div class="modal fade" id="editDataModal" tabindex="-1" aria-labelledby="editDataModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+
+            <form action="/admin/panel/editData" id="formEdit" method="POST" enctype="multipart/form-data">
+                <input type="hidden" name="_method" value="PUT">
+                <?= csrf_field(); ?>
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editDataModalLabel">Tambah Data</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label for="namaDepanEdit" class="form-label">Nama Depan</label>
+                        <input type="text" class="form-control" name="idDataku" id="idDataku" hidden>
+                        <input type="text" class="form-control" name="namaDepanEdit" id="namaDepanEdit" aria-describedby="namaDepanEditHelp">
+                        <div id="namaDepanEditHelp" class="form-text"></div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="tempatLahirEdit" class="form-label">Tempat Lahir</label>
+                        <input type="text" class="form-control" name="tempatLahirEdit" id="tempatLahirEdit" aria-describedby="tempatLahirEditHelp">
+                        <div id="tempatLahirEditHelp" class="form-text"></div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="tglLahirEdit" class="form-label">Tanggal Lahir</label>
+                        <input type="date" class="form-control" name="tglLahirEdit" id="tglLahirEdit" aria-describedby="tglLahirEditHelp">
+                        <div id="tglLahirEditHelp" class="form-text"></div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="genderEdit" class="form-label">Jenis Kelamin</label>
+                        <select class="form-control" name="genderEdit" id="genderEdit" aria-describedby="genderEditHelp">
+                            <option value="" disabled selected>Pilih Gender</option>
+                            <option value="laki-laki">Laki-Laki</option>
+                            <option value="perempuan">Perempuan</option>
+                        </select>
+                        <!-- <input type="text" class="form-control" name="gender" id="gender" aria-describedby="genderHelp"> -->
+                        <div id="genderEditHelp" class="form-text"></div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="noTelpEdit" class="form-label">Telepon</label>
+                        <input type="text" class="form-control" name="noTelpEdit" id="noTelpEdit" aria-describedby="noTelpEditHelp">
+                        <div id="noTelpEditHelp" class="form-text"></div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="emailEdit" class="form-label">Email</label>
+                        <input type="emailEdit" class="form-control" name="emailEdit" id="emailEdit" aria-describedby="emailEditHelp">
+                        <div id="emailEditHelp" class="form-text"></div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="usernameEdit" class="form-label">Username</label>
+                        <input type="text" class="form-control" name="usernameEdit" id="usernameEdit" aria-describedby="usernameEditHelp">
+                        <div id="usernameEditHelp" class="form-text"></div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="passwordEdit" class="form-label">Password</label>
+                        <input type="passwordEdit" class="form-control" name="passwordEdit" id="passwordEdit" aria-describedby="passwordEditHelp">
+                        <div id="passwordEditHelp" class="form-text"></div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="password2Edit" class="form-label">Re-Type Password</label>
+                        <input type="password" class="form-control" name="password2Edit" id="password2Edit" aria-describedby="password2EditHelp">
+                        <div id="password2EditHelp" class="form-text"></div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="avatarEdit" class="form-label">Avatar</label>
+                        <input type="file" accept="image/*" name="avatarEdit" class="form-control" id="avatarEdit" aria-describedby="avatarEditHelp">
+                        <div id="avatarEditHelp" class="form-text"></div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <input type="submit" value="Submit" class="btn btn-primary" />
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
 <script>
     function showTable() {
         $.ajax({
-            url: "<?= base_url("admin/panel/getData") ?>",
+            url: "<?= base_url("admin/panel/getData/true") ?>",
+            data: {
+                table: true
+            },
             dataType: "json",
             success: function(res) {
                 $('#viewdata').html(res.table)
             }
         });
     }
+
     $(document).ready(function() {
         showTable()
     });
@@ -115,6 +198,34 @@
 
 <script>
     $(document).ready(function() {
+        $(document).on('click', '#editData', function() {
+            // if (confirm("Apakah Anda Yakin Akan Menghapus Data?")) {
+            let idData = $(this).attr('data-id');
+            $.ajax({
+                url: `admin/panel/getData/false/${idData}`,
+                data: {},
+                dataType: "json",
+                success: function(res) {
+                    console.log(res.data);
+                    var dataUsr = res.data.users;
+                    $('#namaDepanEdit').val(dataUsr['nama']);
+                    $('#tempatLahirEdit').val(dataUsr['tempat_lahir']);
+                    $('#tglLahirEdit').val(dataUsr['tanggal_lahir']);
+                    $('#genderEdit').val(dataUsr['gender']);
+                    $('#noTelpEdit').val(dataUsr['telepon']);
+                    $('#emailEdit').val(dataUsr['email']);
+                    $('#usernameEdit').val(dataUsr['username']);
+                    $('#passwordEdit').val(dataUsr['password']);
+                    $('#password2Edit').val(dataUsr['password']);
+                    // $('#avatarEdit').val(dataUsr['avatar']);
+                    $('#idDataku').val(dataUsr['id']);
+                    // $('#namaDepan').val()
+                    // $('#viewdata').html(res.table)
+                }
+            });
+            // }
+        });
+
         $(document).on('click', '#deleteData', function() {
             if (confirm("Apakah Anda Yakin Akan Menghapus Data?")) {
                 let idData = $(this).attr('data-id');
@@ -134,10 +245,13 @@
 
         $('#form').submit(function(e) {
             e.preventDefault();
+            // var tipe = $(this).attr('tipe-req');
+            datanya = new FormData(this);
+            console.log(datanya);
             $.ajax({
                 type: $(this).attr('method'),
                 url: $(this).attr('action'),
-                data: new FormData(this),
+                data: datanya,
                 processData: false,
                 contentType: false,
                 success: function(response) {
@@ -159,7 +273,7 @@
                             }
                         }
                     } else {
-                        $('#alerthere').html("<?= session()->getFlashdata('notif'); ?>")
+                        // $('#alerthere').html("<?= session()->getFlashdata('notif'); ?>")
                         $('#exampleModal').modal('hide');
                         $('#namaDepan').val('');
                         $('#tempatLahir').val('');
@@ -171,9 +285,42 @@
                         $('#password').val('');
                         $('#password2').val('');
                         $('#avatar').val('');
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Mantappp',
+                            text: 'Data Berhasil ditambah',
+                            // footer: '<a href="">Why do I have this issue?</a>'
+                        })
                         showTable();
                         // $('#namaDepan').val('');
                     }
+                },
+            });
+        });
+
+        $('#formEdit').submit(function(e) {
+            e.preventDefault();
+            var tipe = $(this).attr('tipe-req');
+            let idData = $('#idDataku').val();
+            datanya = new FormData(this);
+            console.log(datanya.keys);
+            $.ajax({
+                type: $(this).attr('method'),
+                url: $(this).attr('action'),
+                data: new FormData(this),
+                processData: false,
+                contentType: false,
+                success: function(res) {
+                    var resp = JSON.parse(res);
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Mantap',
+                        text: resp.sukses,
+                        confirmButtonText : 'OK'
+                        // footer: '<a href="">Why do I have this issue?</a>'
+                    });
+                    $('#editDataModal').modal('hide');
+                    showTable();
                 },
             });
         });

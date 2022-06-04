@@ -34,6 +34,7 @@ $routes->setAutoRoute(true);
 $routes->get('/', 'Admin/Panel::index');
 $routes->get('/admin/insert', 'Admin/Panel::insertAjax');
 $routes->get('/insert', 'Admin/Panel::insertAjax');
+// $routes->put('/admin/edit', 'Admin/Panel::editData');
 
 /*
  * --------------------------------------------------------------------

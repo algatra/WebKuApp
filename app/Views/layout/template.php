@@ -14,9 +14,17 @@
     <!-- Datatables -->
     <link rel="stylesheet" href="/datatables/datatables.min.css">
     <script src="/datatables/datatables.min.js"></script>
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     <link rel="icon" href="/favicon.png">
     <title>WebKu APP</title>
+
+    <style>
+        .gambar {
+            width: 10rem;
+        }
+    </style>
+
 </head>
 
 <body>

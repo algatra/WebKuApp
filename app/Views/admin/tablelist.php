@@ -13,14 +13,17 @@
         <tbody class="mb-5">
             <?php $i = 1;
             foreach ($users as $user) { ?>
-                <tr class="mb-3">
+                <tr>
                     <td><?= $i++ ?></td>
-                    <td><img class="rounded img-thumbnail" width="60%" src="<?= base_url('assets/avatar/' . $user['avatar']) ?>" alt="<?= $user['avatar'] ?>"></td>
+                    <td><img class="rounded gambar img-thumbnail" src="<?= base_url('assets/avatar/' . $user['avatar']) ?>" alt="<?= $user['avatar'] ?>"></td>
                     <td><?= $user['nama'] ?></td>
                     <td><?= $user['email'] ?></td>
                     <td><?= $user['username'] ?></td>
                     <td><?= $user['telepon'] ?></td>
-                    <td><button id="deleteData" data-id="<?= $user['id'] ?>" class="btn btn-primary">Delete</button></td>
+                    <td>
+                        <button type="button" data-id="<?= $user['id'] ?>" id="editData" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#editDataModal">Edit</button>
+                        <button id="deleteData" data-id="<?= $user['id'] ?>" class="btn btn-danger">Delete</button>
+                    </td>
                 </tr>
             <?php } ?>
         </tbody>
@@ -28,13 +31,6 @@
 
     <script>
         $(document).ready(function() {
-            $('#datatables').DataTable({
-                buttons: [{
-                    text: 'My button',
-                    action: function(e, dt, node, config) {
-                        alert('Button activated');
-                    }
-                }]
-            });
+            $('#datatables').DataTable();
         });
     </script>
