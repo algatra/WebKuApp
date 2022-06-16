@@ -31,9 +31,12 @@ $routes->setAutoRoute(true);
 
 // We get a performance increase by specifying the default
 // route since we don't have to scan directories.
-$routes->get('/', 'Admin/Panel::index');
-$routes->get('/admin/insert', 'Admin/Panel::insertAjax');
-$routes->get('/insert', 'Admin/Panel::insertAjax');
+$routes->get('/login', 'Auth::login');
+$routes->post('/login', 'Auth::login');
+
+$routes->get('/', 'Admin/Panel::index', ['filter' => 'checker']);
+$routes->get('/admin/insert', 'Admin/Panel::insertAjax', ['filter' => 'checker']);
+$routes->get('/insert', 'Admin/Panel::insertAjax', ['filter' => 'checker']);
 // $routes->put('/admin/edit', 'Admin/Panel::editData');
 
 /*

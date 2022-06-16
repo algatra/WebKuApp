@@ -16,6 +16,8 @@ class Panel extends BaseController
 
     public function index()
     {
+        // $faker = \Faker\Factory::create('id_ID');
+        // dd($faker->phoneNumber);
         $data = [
             'title' => 'Dashboard',
             // 'users' => $this->AdminModel->findAll()
@@ -23,13 +25,13 @@ class Panel extends BaseController
         return view('admin/dashboard', $data);
     }
 
-    public function getData($table=false, $ids=false)
+    public function getData($table = false, $ids = false)
     {
         if ($this->request->isAjax()) {
             $table = $this->request->getVar('table');
-            if($ids){
+            if ($ids) {
                 $data['users'] = $this->AdminModel->find($ids);
-            }else{
+            } else {
                 $data['users'] = $this->AdminModel->findAll();
             }
             $res = ['data' => $data];
@@ -59,7 +61,7 @@ class Panel extends BaseController
 
     public function editData()
     {
-        if($this->request->isAJAX()){
+        if ($this->request->isAJAX()) {
             // dd($this->request->getVar());
             $ids = $this->request->getVar('idDataku');
             $fileAva = $this->request->getFile('avatarEdit');
@@ -78,7 +80,7 @@ class Panel extends BaseController
                 'avatar' => $namaAva
             ]);
             echo json_encode(['pesan' => "Data Berhasil Diubah"]);
-        }else{
+        } else {
             echo "No Access";
         }
     }

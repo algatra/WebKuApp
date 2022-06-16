@@ -8,6 +8,9 @@
 </div>
 
 <div class="container mt-3">
+    <?php if (session()->getFlashdata('pesan')) {
+        echo session()->getFlashdata('pesan');
+    }  ?>
     <div class="row mb-3">
         <div class="col-md-12 text-right">
 
@@ -316,7 +319,7 @@
                         icon: 'success',
                         title: 'Mantap',
                         text: resp.sukses,
-                        confirmButtonText : 'OK'
+                        confirmButtonText: 'OK'
                         // footer: '<a href="">Why do I have this issue?</a>'
                     });
                     $('#editDataModal').modal('hide');
